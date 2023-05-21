@@ -101,7 +101,7 @@
             <div 
               slot="required" 
               class="alert alert-danger mt-1"
-            >Campo requerido</div>            
+            >Campo requerido</div>          
             <div 
               slot="min" 
               class="alert alert-danger mt-1"
