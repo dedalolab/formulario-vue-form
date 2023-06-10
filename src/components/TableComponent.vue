@@ -9,7 +9,7 @@
 
       <tbody>
 
-        <tr v-for="user in users" :key="user.id">
+        <tr v-for="(user, i) in users" :key="i">
           <td>{{ user.nombre | capitalize }}</td>
           <td>{{ user.apellido | capitalize }}</td>
           <td>{{ user.edad }}</td>
@@ -55,9 +55,7 @@ export default {
 
 <style scoped>
 
-
 li {
- 
   text-align: left;
   margin-left: -16px;
 }
