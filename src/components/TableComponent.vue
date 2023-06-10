@@ -13,7 +13,7 @@
           <td>{{ user.nombre | capitalize }}</td>
           <td>{{ user.apellido | capitalize }}</td>
           <td>{{ user.edad }}</td>
-          <td>{{ user.email }}</td>
+          <td>{{ lowercase(user.email) }}</td>
         </tr>
 
       </tbody>
@@ -37,13 +37,17 @@ export default {
     titles: ['Nombre', 'Apellido', 'Edad', 'E-mail'],
   }),
 
+  // OJO: En Vue 3 los filters fueron deprecados
+  // Pueden ser reemplazados por methods
   filters: {
     capitalize(name) {
       return name.replace(/\b\w/g, l => l.toUpperCase())
-    },
+    }
+  },
 
-    lowerCase(value) {
-      return value.toLowerCase();
+  methods: {
+    lowercase(value) {
+      return value.toLowerCase()
     }
   }
 }

@@ -2,11 +2,15 @@
 
   <section class="form">
  
-      <h2><u>Formulario con <a href="https://www.npmjs.com/package/vue-form" target="_blank">vue-form</a></u></h2>
+      <h2><u>Formulario con 
+        <a href="https://www.npmjs.com/package/vue-form" target="_blank">
+          VueForm
+        </a></u>
+      </h2>
 
       <br>
 
-      <VueForm :state="formState" @submit.prevent="submitForm">
+      <VueForm ref="form" :state="formState" @submit.prevent="submitForm">
 
         <Validate tag="div">
 
@@ -15,7 +19,7 @@
             type="text" 
             id="nombre" 
             name="nombre" 
-            class="form-control"
+            class="form-control w-400"
             autocomplete="off"
             v-model="formData.nombre"
             required
@@ -23,20 +27,26 @@
             :maxlength="textLengthMax"
           >
        
-          <FieldMessages name="nombre" show="$submitted">
+          <FieldMessages name="nombre">
             <div 
+              v-if="formState.$submitted"
               slot="required" 
-              class="alert alert-danger mt-1"
+              class="alert alert-danger mt-1 w-400"
             >
               Campo requerido
             </div>            
                 
-            <div slot="minlength" class="alert alert-danger mt-1">
+            <div
+              v-if="formState.$submitted && formState.$dirty" 
+              slot="minlength" 
+              class="alert alert-danger mt-1 w-400"
+            >
               Este campo requiere como mínimo {{ textLengthMin }} caracteres
             </div>
 
-            <div v-if="formData.nombre.length == textLengthMax" 
-              class="alert alert-warning mt-1"
+            <div 
+              v-if="formData.nombre.length == textLengthMax" 
+              class="alert alert-warning mt-1 w-400"
             >
               Este campo debe tener como máximo {{ textLengthMax }} caracteres
             </div>
@@ -53,26 +63,35 @@
             type="text" 
             id="apellido" 
             name="apellido" 
-            class="form-control"
+            class="form-control w-400"
             autocomplete="off"
             v-model="formData.apellido"
             required
+            :minlength="textLengthMin"
             :maxlength="textLengthMax"
           >
 
-          <FieldMessages name="apellido" show="$submitted">
+          <FieldMessages name="apellido">
 
-            <div 
+            <div
+              v-if="formState.$submitted" 
               slot="required" 
-              class="alert alert-danger mt-1"
-            >Campo requerido</div>            
+              class="alert alert-danger mt-1 w-400"
+            >
+              Campo requerido
+            </div>            
                
-            <div slot="minlength" class="alert alert-danger mt-1">
+            <div
+              v-if="formState.$submitted && formState.$dirty" 
+              slot="minlength" 
+              class="alert alert-danger mt-1 w-400"
+            >
               Este campo requiere como mínimo {{ textLengthMin }} caracteres
             </div>  
 
-            <div v-if="formData.apellido.length == textLengthMax" 
-              class="alert alert-warning mt-1"
+            <div 
+              v-if="formData.apellido.length == textLengthMax" 
+              class="alert alert-warning mt-1 w-400"
             >
               Este campo debe tener como máximo {{ textLengthMax }} caracteres
             </div>
@@ -88,7 +107,7 @@
             type="number" 
             id="edad" 
             name="edad" 
-            class="form-control"
+            class="form-control w-400"
             autocomplete="off"
             v-model.number="formData.edad"
             required
@@ -96,20 +115,29 @@
             :max="edadMax"
           >
 
-          <FieldMessages name="edad" show="$submitted">
+          <FieldMessages name="edad">
 
-            <div 
+            <div
+              v-if="formState.$submitted"  
               slot="required" 
-              class="alert alert-danger mt-1"
-            >Campo requerido</div>          
-            <div 
+              class="alert alert-danger mt-1 w-400"
+            >
+              Campo requerido
+            </div>          
+            <div
+              v-if="formState.$submitted && formState.$dirty"  
               slot="min" 
-              class="alert alert-danger mt-1"
-            >La edad mínima es de {{edadMin}} años</div>            
+              class="alert alert-danger mt-1 w-400"
+            >
+              La edad mínima es de {{ edadMin }} años
+            </div>            
             <div 
+              v-if="formState.$submitted && formState.$dirty" 
               slot="max" 
-              class="alert alert-danger mt-1"
-            >La edad máxima permitida es de {{edadMax}} años</div>            
+              class="alert alert-danger mt-1 w-400"
+            >
+              La edad máxima permitida es de {{ edadMax }} años
+            </div>            
           
           </FieldMessages>
 
@@ -123,27 +151,34 @@
             type="email" 
             id="email" 
             name="email" 
-            class="form-control"
+            class="form-control w-400"
             autocomplete="off"
             v-model.trim="formData.email"
             required
           >
 
-          <FieldMessages name="email" auto-label show="$submitted">
+          <FieldMessages name="email" auto-label>
             <div 
+              v-if="formState.$submitted" 
               slot="required" 
-              class="alert alert-danger mt-1"
-            >Campo requerido</div>            
-            <div 
+              class="alert alert-danger mt-1 w-400"
+            >
+              Campo requerido
+            </div>            
+            <div
+              v-if="formState.$submitted && formState.$dirty"  
               slot="email" 
-              class="alert alert-danger mt-1"
-            >Formato de e-mail invalido.</div>
+              class="alert alert-danger mt-1 w-400"
+            >
+              Formato de e-mail inválido.
+            </div>
+
           </FieldMessages>
 
         </Validate>
         <br>
 
-        <button class="btn btn-success mt-3 mb-5" type="submit">Enviar</button>
+        <button class="btn btn-success mt-5 mb-1" type="submit">Enviar</button>
       </VueForm>
 
   </section>
@@ -166,7 +201,12 @@
         edad: '',
         email: ''
       },
-
+      
+      // formState.$submitted == formulario enviado
+      // formState.$touched == campo focalizado
+      // formState.$dirty == campo ingresado
+      // formState.$error == campo con error
+      // formState.$invalid == formulario con errores
       formState : {},
       
       textLengthMin : 3,
@@ -179,15 +219,24 @@
     methods: {
  
       submitForm() {
+
         if (this.formState.$invalid) {
+          // scroll hacia arriba para que el usuario vea los mensajes de error
           window.scroll(0,0)
+
         } else {
+          // Emitir data
+          // Usar un spread operator para clonar el objeto formData
+          // De lo contrario se vacía al hacer el reset
           this.$emit('emit-form', { ...this.formData })
+          
+          // Resetear validaciones
+          this.formState._reset()
+
+          // Resetear formulario
+          // El metodo nativo de VueForm no funciona
+          // this.$refs.form.reset()
           this.reset()
-          this.formState.$submitted = false
-          this.formState.$dirty = false
-          this.formState.$touched = false
-          console.log(this.formState.$submitted)
         }
       },
 
@@ -199,23 +248,12 @@
 
 </script>
 
-<style scoped>
+<style>
 
-.form {
-  margin: auto;
-  max-width: 600px;
-}
-
-.form-control {
-  margin: auto;
+.w-400 {
+  min-width: 400px;
   max-width: 400px;
-}
-
-.alert {
   margin: auto;
-  max-width: 400px;
 }
-
-
 
 </style>
